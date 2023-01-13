@@ -60,6 +60,7 @@ namespace PerevoschikovRestorany
             this.btn_logIn.TabIndex = 2;
             this.btn_logIn.Text = "Войти";
             this.btn_logIn.UseVisualStyleBackColor = true;
+            this.btn_logIn.Click += new System.EventHandler(this.btn_logIn_Click);
             // 
             // label2
             // 

@@ -16,5 +16,12 @@ namespace PerevoschikovRestorany
         {
             InitializeComponent();
         }
+
+        private void btn_logIn_Click(object sender, EventArgs e)
+        {
+            var activeMainForm = new MainForm();
+            activeMainForm.Show();
+            //this.Close();
+        }
     }
 }
