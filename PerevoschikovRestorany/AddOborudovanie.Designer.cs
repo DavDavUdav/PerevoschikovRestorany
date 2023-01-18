@@ -30,21 +30,21 @@ namespace PerevoschikovRestorany
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tb_name_Equipment = new System.Windows.Forms.TextBox();
+            this.tb_serial_Number = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cb_address = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label_address = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.tb_supplier_name = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.cb_location = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -55,23 +55,23 @@ namespace PerevoschikovRestorany
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 13);
+            this.label1.Size = new System.Drawing.Size(157, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Имя поставщика";
+            this.label1.Text = "Наименование оборудования";
             // 
-            // textBox1
+            // tb_name_Equipment
             // 
-            this.textBox1.Location = new System.Drawing.Point(9, 32);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(183, 20);
-            this.textBox1.TabIndex = 1;
+            this.tb_name_Equipment.Location = new System.Drawing.Point(9, 32);
+            this.tb_name_Equipment.Name = "tb_name_Equipment";
+            this.tb_name_Equipment.Size = new System.Drawing.Size(183, 20);
+            this.tb_name_Equipment.TabIndex = 1;
             // 
-            // textBox2
+            // tb_serial_Number
             // 
-            this.textBox2.Location = new System.Drawing.Point(9, 75);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(183, 20);
-            this.textBox2.TabIndex = 3;
+            this.tb_serial_Number.Location = new System.Drawing.Point(9, 75);
+            this.tb_serial_Number.Name = "tb_serial_Number";
+            this.tb_serial_Number.Size = new System.Drawing.Size(183, 20);
+            this.tb_serial_Number.TabIndex = 3;
             // 
             // label2
             // 
@@ -102,10 +102,10 @@ namespace PerevoschikovRestorany
             // 
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.tb_name_Equipment);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.tb_serial_Number);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(201, 172);
@@ -113,77 +113,62 @@ namespace PerevoschikovRestorany
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Оборудование";
             // 
+            // cb_address
+            // 
+            this.cb_address.FormattingEnabled = true;
+            this.cb_address.Location = new System.Drawing.Point(9, 74);
+            this.cb_address.Name = "cb_address";
+            this.cb_address.Size = new System.Drawing.Size(183, 21);
+            this.cb_address.TabIndex = 6;
+            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cb_location);
+            this.groupBox2.Controls.Add(this.cb_address);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.textBox3);
+            this.groupBox2.Controls.Add(this.label_address);
             this.groupBox2.Location = new System.Drawing.Point(219, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(201, 63);
+            this.groupBox2.Size = new System.Drawing.Size(201, 103);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Ресторан";
+            this.groupBox2.Text = "Местонахождение";
             // 
-            // label4
+            // label_address
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Имя поставщика";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(9, 32);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(183, 20);
-            this.textBox3.TabIndex = 1;
+            this.label_address.AutoSize = true;
+            this.label_address.Location = new System.Drawing.Point(6, 59);
+            this.label_address.Name = "label_address";
+            this.label_address.Size = new System.Drawing.Size(94, 13);
+            this.label_address.TabIndex = 0;
+            this.label_address.Text = "Адрес ресторана";
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.textBox5);
-            this.groupBox3.Controls.Add(this.textBox4);
-            this.groupBox3.Location = new System.Drawing.Point(219, 81);
+            this.groupBox3.Controls.Add(this.tb_supplier_name);
+            this.groupBox3.Location = new System.Drawing.Point(219, 121);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(201, 103);
+            this.groupBox3.Size = new System.Drawing.Size(201, 63);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Поставщик";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(94, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Адрес ресторана";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(9, 32);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(183, 20);
-            this.textBox4.TabIndex = 1;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 61);
+            this.label6.Location = new System.Drawing.Point(6, 18);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(94, 13);
             this.label6.TabIndex = 2;
             this.label6.Text = "Имя поставщика";
             // 
-            // textBox5
+            // tb_supplier_name
             // 
-            this.textBox5.Location = new System.Drawing.Point(9, 77);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(183, 20);
-            this.textBox5.TabIndex = 3;
+            this.tb_supplier_name.Location = new System.Drawing.Point(9, 34);
+            this.tb_supplier_name.Name = "tb_supplier_name";
+            this.tb_supplier_name.Size = new System.Drawing.Size(183, 20);
+            this.tb_supplier_name.TabIndex = 3;
             // 
             // button1
             // 
@@ -194,6 +179,29 @@ namespace PerevoschikovRestorany
             this.button1.Text = "Добавить";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // cb_location
+            // 
+            this.cb_location.FormattingEnabled = true;
+            this.cb_location.Items.AddRange(new object[] {
+            "Склад",
+            "Ресторан"});
+            this.cb_location.Location = new System.Drawing.Point(9, 32);
+            this.cb_location.Name = "cb_location";
+            this.cb_location.Size = new System.Drawing.Size(183, 21);
+            this.cb_location.TabIndex = 7;
+            this.cb_location.SelectedIndexChanged += new System.EventHandler(this.cb_location_SelectedIndexChanged);
+            this.cb_location.SelectionChangeCommitted += new System.EventHandler(this.cb_location_SelectionChangeCommitted);
+            this.cb_location.SelectedValueChanged += new System.EventHandler(this.cb_location_SelectedValueChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(113, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "определенеие места";
             // 
             // AddOborudovanie
             // 
@@ -221,20 +229,20 @@ namespace PerevoschikovRestorany
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tb_name_Equipment;
+        private System.Windows.Forms.TextBox tb_serial_Number;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label_address;
+        private System.Windows.Forms.TextBox tb_supplier_name;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cb_address;
+        private System.Windows.Forms.ComboBox cb_location;
+        private System.Windows.Forms.Label label4;
     }
 }
