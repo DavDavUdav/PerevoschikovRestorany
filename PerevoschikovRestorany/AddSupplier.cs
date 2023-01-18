@@ -32,11 +32,13 @@ namespace PerevoschikovRestorany
 
         private void button1_Click(object sender, EventArgs e)
         {
+            /*
             _supplier = new Suppliers()
             {
                 SupplierName = textBox1.Text
             };
             this.Close();
+            */
         }
 
         

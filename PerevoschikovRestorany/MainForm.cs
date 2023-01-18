@@ -79,6 +79,8 @@ namespace PerevoschikovRestorany
         private async Task UpdateSuppliers()
         {
             //Получение данных из таблицы Equipments
+            
+            /*
             var allSuppliers = await _dataStore.Suppliers
                 .Select(x => new SuppliersTable() 
                 { 
@@ -86,12 +88,13 @@ namespace PerevoschikovRestorany
                     Name = x.SupplierName
                 })
                 .ToListAsync();
-
+            
             //Очистить таблицу
             dgw_suppliers.Rows.Clear();
 
             //Вывести новые значения
             dgw_suppliers.DataSource = allSuppliers;
+            */
         }
 
         // обновление ресторанов

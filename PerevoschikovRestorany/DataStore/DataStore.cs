@@ -36,7 +36,7 @@ namespace PerevoschikovRestorany.DataStore
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<InfoEquipment> InfoEquipment { get; set; }
+        
     }
 
     public class Equipment // оборудование
@@ -44,7 +44,7 @@ namespace PerevoschikovRestorany.DataStore
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public List<InfoEquipment> InfoEquipment { get; set; }
+        
     }
 
     public class InfoEquipment // инормация об оборудовании
