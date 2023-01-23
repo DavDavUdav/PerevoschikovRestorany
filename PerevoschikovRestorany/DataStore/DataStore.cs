@@ -16,6 +16,7 @@ namespace PerevoschikovRestorany.DataStore
         public DbSet<InfoEquipment> InfoEquipment { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Restoraunt> Restoraunts { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         /*
         public DbSet<EquipmentRestoraunt> Equipments { get; set; }
@@ -25,132 +26,85 @@ namespace PerevoschikovRestorany.DataStore
         */
         //Переопределяем подключение к базе данных
 
+
+        // строка подключения
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=DataBase.db");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-L93R2E4;Database=Perevoschikov;Trusted_Connection=True;");
+        }
+
+        public DataStore()
+        {
+            Database.EnsureCreated();
         }
     }
+
 
     public class Suppliers // поставщики
     {
         public int Id { get; set; }
+        [Required, MaxLength(50)]
         public string Name { get; set; }
 
-        
+        public List<InfoEquipment> InfoEquipment { get; set; } // может иметь много оборудования
     }
 
     public class Equipment // оборудование
     {
         public int Id { get; set; }
+        [Required, MaxLength(50)]
         public string Name { get; set; }
 
-        
+        public List<InfoEquipment> InfoEquipment { get; set; } // иметь одно что-то(не знаю как назвать, но грубо говоря оборудование)
     }
 
     public class InfoEquipment // инормация об оборудовании
     {
         public int Id { get; set; }
+        [Required]
         public int SuppliersId { get; set; }
+        [Required]
         public int EquipmentId { get; set; }
+        [Required]
         public int Price { get; set; }
 
-        public List<Equipment> Equipment { get; set; }
-        public List<Suppliers> Suppliers { get; set; }
-        
+        public Equipment Equipment { get; set; } 
+        public Suppliers Suppliers { get; set; } // может иметь только одного поставщика
+        public List<Stock> Stocks { get; set; } // может повторяться оборудование
     }
 
     public class Stock // склад
     {
         public int Id { get; set; }
+        [Required]
         public int InfoEquipmentId { get; set; }
-        public int SerialNumber { get; set; }
-        public int RestorauntId { get; set; }
+        [Required, MaxLength(5), MinLength(5)]
+        public string SerialNumber { get; set; }
+        
+        public int? RestorauntId { get; set; }
 
-        public List<InfoEquipment> InfoEquipment { get; set; }
-        public Restoraunt Restoraunt { get; set; }
+        
+        public InfoEquipment InfoEquipment { get; set; } // склад может иметь много оборудования
+        public Restoraunt Restoraunt { get; set; } // привязка только к одному ресторану
     }
 
     public class Restoraunt // рестораны
     {
         public int Id { get; set; }
+        [Required, MaxLength(20)]
         public string Name { get; set; }
+        [Required, MaxLength(50)]
         public string Address { get; set; }
 
-        public List<Stock> Stock { get; set; }
+        public List<Stock> Stock { get; set; } // может иметь много оборудования
     }
 
-    /*
-    
-    // таблица рестораны
-    public class Restorany
-    {
-        //Primary key 
-        public int Id { get; set; }
-        public string RestoranName { get; set; }
-        public string Address { get; set; }
-
-        public List<EquipmentRestoraunt> EquipmentRestoraunts { get; set; }
-    }
-
-    // таблица поставщики
-    public class Suppliers
+    public class Users
     {
         public int Id { get; set; }
-        public string SupplierName { get; set; }
-
-        public List<SuppliedEquipment> SuppliedEquipment { get; set; }
-    }
-
-    // поставляемое оборудование(какой поставщик что поставляет)
-    public class SuppliedEquipment
-    {
-        public int Id { get; set; }
+        [MaxLength(20), Required]
         public string Name { get; set; }
-        public string SerialNumber { get; set; }
-        public DateTime ReceiptDate { get; set; }
-        public int price { get; set; }
-
-        public int SuppliersId { get; set; }
-        public Suppliers Suppliers { get; set; }
-    }
-
-    // имеющееся оборудование
-    public class Equipment
-    {
-        public int Id { get; set; }
-        public int SEId { get; set; }
-        public SuppliedEquipment SuppliedEquipment { get; set; }
-    }
-
-    // таблица оборудование в ресторанах
-    public class EquipmentRestoraunt
-    {
-        //PK
-        public int Id { get; set; }
-        public int EquipmentId { get; set; }
-        public int RestoranId { get; set; }
-
-        public Restorany Restorany { get; set; }
-        public Equipment Equipment { get; set; }
-    }
-
-    // склад
-    public class Stock
-    {
-        public int id { get; set; }
-        public int EquipmentId { get; set; } // id поставляемого оборудования
-        public string Condition { get; set; }
-
-        public List<Equipment> Equipment { get; set; }
-    }
-
-    // таблица пользователи
-    public class User
-    {
-        public int Id { get; set; }
-        public string Personal { get; set; }
+        [MinLength(5), Required]
         public string Password { get; set; }
     }
-
-    */
 }

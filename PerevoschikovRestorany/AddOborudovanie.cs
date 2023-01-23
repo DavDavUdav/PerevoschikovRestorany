@@ -13,7 +13,7 @@ namespace PerevoschikovRestorany
         public DataStore.DataStore _dataStore { get; set; }
 
         //Объявляем переменную описывающую класс оборудования
-        public Equipment _equipment;
+        public InfoEquipment _info_equipment;
         public AddOborudovanie()
         {
             _dataStore = new DataStore.DataStore();
@@ -22,11 +22,15 @@ namespace PerevoschikovRestorany
 
             InitializeComponent();
 
-            
+            StartLoad();
 
         }
 
-        
+        public async void StartLoad()
+        {
+            await LoadNameEquipment();
+            await LoadNameSuppliers();
+        }
 
         /*
         private async Task LoadSuppliers()
@@ -41,12 +45,67 @@ namespace PerevoschikovRestorany
         }
         */
 
+        private async Task LoadNameEquipment()
+        {
+            var nameEquip = await _dataStore.Equipment
+                .Select(x => new UpdateEquipment() 
+                { 
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToArrayAsync();
+
+            foreach (var item in nameEquip)
+            {
+                cb_equipment.Items.Add(item.Name);
+            }
+        }
+
+        private async Task LoadNameSuppliers()
+        {
+            var nameSupplier = await _dataStore.Suppliers
+                .Select(x => new UpdateSuppliers()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToArrayAsync();
+
+            foreach (var item in nameSupplier)
+            {
+                cb_suppliers_name.Items.Add(item.Name);
+            }
+            
+        }
 
         // Метод получения результата заполнения формы
-        public Equipment GetEqupment() => _equipment;
+        public InfoEquipment GetEqupment() => _info_equipment;
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
+            var _nameEquip = await _dataStore.Equipment
+                .Where(p => p.Name==cb_equipment.SelectedItem.ToString())
+                .Select(x => new UpdateEquipment()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToArrayAsync();
+
+            var nameSupplier = await _dataStore.Suppliers
+                .Where(p => p.Name == cb_suppliers_name.SelectedItem.ToString())
+                .Select(x => new UpdateSuppliers()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                }).ToArrayAsync();
+
+            _info_equipment = new InfoEquipment()
+            {
+                EquipmentId = _nameEquip[0].Id,
+                SuppliersId = nameSupplier[0].Id,
+                Price = Convert.ToInt32(tb_price.Text)
+                
+            };
+            
+            
             //Заполняем класс и записываем в переменную _equipment
             /*
             _equipment = new Equipment()
@@ -70,31 +129,19 @@ namespace PerevoschikovRestorany
             this.Close();
         }
 
-        private void cb_location_SelectedValueChanged(object sender, EventArgs e)
-        {
-            
-        }
+        
 
-        private void cb_location_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            
-        }
+    }
 
-        private void cb_location_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cb_location.SelectedIndex == 0)
-            {
-                cb_address.Visible = false;
-                label_address.Visible = false;
-            }
+    public class UpdateEquipment
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 
-            if (cb_location.SelectedIndex == 1)
-            {
-                cb_address.Visible = true;
-                label_address.Visible = true;
-
-
-            }
-        }
+    public class UpdateSuppliers
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

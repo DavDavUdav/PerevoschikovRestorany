@@ -30,24 +30,16 @@ namespace PerevoschikovRestorany
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.tb_name_Equipment = new System.Windows.Forms.TextBox();
-            this.tb_serial_Number = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cb_address = new System.Windows.Forms.ComboBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label_address = new System.Windows.Forms.Label();
+            this.cb_equipment = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tb_supplier_name = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.cb_location = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.cb_suppliers_name = new System.Windows.Forms.ComboBox();
+            this.btn_add_equipment_to_Supplier = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tb_price = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -59,169 +51,87 @@ namespace PerevoschikovRestorany
             this.label1.TabIndex = 0;
             this.label1.Text = "Наименование оборудования";
             // 
-            // tb_name_Equipment
-            // 
-            this.tb_name_Equipment.Location = new System.Drawing.Point(9, 32);
-            this.tb_name_Equipment.Name = "tb_name_Equipment";
-            this.tb_name_Equipment.Size = new System.Drawing.Size(183, 20);
-            this.tb_name_Equipment.TabIndex = 1;
-            // 
-            // tb_serial_Number
-            // 
-            this.tb_serial_Number.Location = new System.Drawing.Point(9, 75);
-            this.tb_serial_Number.Name = "tb_serial_Number";
-            this.tb_serial_Number.Size = new System.Drawing.Size(183, 20);
-            this.tb_serial_Number.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 59);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Серийный номер";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 104);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Дата поставки";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(9, 120);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(183, 20);
-            this.dateTimePicker1.TabIndex = 5;
-            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cb_equipment);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.dateTimePicker1);
-            this.groupBox1.Controls.Add(this.tb_name_Equipment);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.tb_serial_Number);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(201, 172);
+            this.groupBox1.Size = new System.Drawing.Size(201, 65);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Оборудование";
             // 
-            // cb_address
+            // cb_equipment
             // 
-            this.cb_address.FormattingEnabled = true;
-            this.cb_address.Location = new System.Drawing.Point(9, 74);
-            this.cb_address.Name = "cb_address";
-            this.cb_address.Size = new System.Drawing.Size(183, 21);
-            this.cb_address.TabIndex = 6;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.cb_location);
-            this.groupBox2.Controls.Add(this.cb_address);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label_address);
-            this.groupBox2.Location = new System.Drawing.Point(219, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(201, 103);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Местонахождение";
-            // 
-            // label_address
-            // 
-            this.label_address.AutoSize = true;
-            this.label_address.Location = new System.Drawing.Point(6, 59);
-            this.label_address.Name = "label_address";
-            this.label_address.Size = new System.Drawing.Size(94, 13);
-            this.label_address.TabIndex = 0;
-            this.label_address.Text = "Адрес ресторана";
+            this.cb_equipment.FormattingEnabled = true;
+            this.cb_equipment.Location = new System.Drawing.Point(6, 32);
+            this.cb_equipment.Name = "cb_equipment";
+            this.cb_equipment.Size = new System.Drawing.Size(186, 21);
+            this.cb_equipment.TabIndex = 6;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.tb_supplier_name);
-            this.groupBox3.Location = new System.Drawing.Point(219, 121);
+            this.groupBox3.Controls.Add(this.cb_suppliers_name);
+            this.groupBox3.Location = new System.Drawing.Point(225, 28);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(201, 63);
+            this.groupBox3.Size = new System.Drawing.Size(201, 49);
             this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Поставщик";
             // 
-            // label6
+            // cb_suppliers_name
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 18);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(94, 13);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "Имя поставщика";
+            this.cb_suppliers_name.FormattingEnabled = true;
+            this.cb_suppliers_name.Location = new System.Drawing.Point(6, 19);
+            this.cb_suppliers_name.Name = "cb_suppliers_name";
+            this.cb_suppliers_name.Size = new System.Drawing.Size(189, 21);
+            this.cb_suppliers_name.TabIndex = 7;
             // 
-            // tb_supplier_name
+            // btn_add_equipment_to_Supplier
             // 
-            this.tb_supplier_name.Location = new System.Drawing.Point(9, 34);
-            this.tb_supplier_name.Name = "tb_supplier_name";
-            this.tb_supplier_name.Size = new System.Drawing.Size(183, 20);
-            this.tb_supplier_name.TabIndex = 3;
+            this.btn_add_equipment_to_Supplier.Location = new System.Drawing.Point(12, 178);
+            this.btn_add_equipment_to_Supplier.Name = "btn_add_equipment_to_Supplier";
+            this.btn_add_equipment_to_Supplier.Size = new System.Drawing.Size(414, 33);
+            this.btn_add_equipment_to_Supplier.TabIndex = 9;
+            this.btn_add_equipment_to_Supplier.Text = "Добавить";
+            this.btn_add_equipment_to_Supplier.UseVisualStyleBackColor = true;
+            this.btn_add_equipment_to_Supplier.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button1
+            // groupBox2
             // 
-            this.button1.Location = new System.Drawing.Point(12, 190);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(408, 30);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Добавить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.groupBox2.Controls.Add(this.tb_price);
+            this.groupBox2.Location = new System.Drawing.Point(119, 83);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(201, 49);
+            this.groupBox2.TabIndex = 9;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Цена";
             // 
-            // cb_location
+            // tb_price
             // 
-            this.cb_location.FormattingEnabled = true;
-            this.cb_location.Items.AddRange(new object[] {
-            "Склад",
-            "Ресторан"});
-            this.cb_location.Location = new System.Drawing.Point(9, 32);
-            this.cb_location.Name = "cb_location";
-            this.cb_location.Size = new System.Drawing.Size(183, 21);
-            this.cb_location.TabIndex = 7;
-            this.cb_location.SelectedIndexChanged += new System.EventHandler(this.cb_location_SelectedIndexChanged);
-            this.cb_location.SelectionChangeCommitted += new System.EventHandler(this.cb_location_SelectionChangeCommitted);
-            this.cb_location.SelectedValueChanged += new System.EventHandler(this.cb_location_SelectedValueChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "определенеие места";
+            this.tb_price.Location = new System.Drawing.Point(7, 20);
+            this.tb_price.Name = "tb_price";
+            this.tb_price.Size = new System.Drawing.Size(188, 20);
+            this.tb_price.TabIndex = 0;
             // 
             // AddOborudovanie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(430, 223);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox3);
+            this.ClientSize = new System.Drawing.Size(438, 223);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.btn_add_equipment_to_Supplier);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
-            this.MaximumSize = new System.Drawing.Size(446, 262);
             this.MinimumSize = new System.Drawing.Size(446, 262);
             this.Name = "AddOborudovanie";
             this.Text = "AddOborudovanie";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -229,20 +139,12 @@ namespace PerevoschikovRestorany
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tb_name_Equipment;
-        private System.Windows.Forms.TextBox tb_serial_Number;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label_address;
-        private System.Windows.Forms.TextBox tb_supplier_name;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox cb_address;
-        private System.Windows.Forms.ComboBox cb_location;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btn_add_equipment_to_Supplier;
+        private System.Windows.Forms.ComboBox cb_equipment;
+        private System.Windows.Forms.ComboBox cb_suppliers_name;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox tb_price;
     }
 }
