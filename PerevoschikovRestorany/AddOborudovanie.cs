@@ -81,6 +81,11 @@ namespace PerevoschikovRestorany
 
         private async void button1_Click(object sender, EventArgs e)
         {
+            if (cb_equipment.SelectedText==null || cb_suppliers_name.SelectedText==null || tb_price.Text==null)
+            {
+                MessageBox.Show("вы не ввели цену или не выбрали поставщиков или оборудование");
+            }
+            
             var _nameEquip = await _dataStore.Equipment
                 .Where(p => p.Name==cb_equipment.SelectedItem.ToString())
                 .Select(x => new UpdateEquipment()

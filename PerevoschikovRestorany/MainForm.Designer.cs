@@ -32,8 +32,6 @@ namespace PerevoschikovRestorany
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.btn_add_equipment = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btn_move_to_restoran = new System.Windows.Forms.Button();
             this.cb_rest_address_search1 = new System.Windows.Forms.ComboBox();
@@ -45,6 +43,8 @@ namespace PerevoschikovRestorany
             this.tb_supplier_naim = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tb_ser_num = new System.Windows.Forms.TextBox();
             this.btn_add_to_stock = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btn_search_supplier = new System.Windows.Forms.Button();
@@ -74,9 +74,9 @@ namespace PerevoschikovRestorany
             this.tb_naim_equipment = new System.Windows.Forms.TextBox();
             this.btn_add_equipments_all = new System.Windows.Forms.Button();
             this.dgw_equipment_all = new System.Windows.Forms.DataGridView();
+            this.btn_do_document = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgw_stock)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -122,7 +122,7 @@ namespace PerevoschikovRestorany
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.groupBox7);
+            this.tabPage2.Controls.Add(this.btn_do_document);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Controls.Add(this.btn_update_equipments);
             this.tabPage2.Controls.Add(this.dgw_stock);
@@ -133,26 +133,6 @@ namespace PerevoschikovRestorany
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Склад";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.btn_add_equipment);
-            this.groupBox7.Location = new System.Drawing.Point(6, 66);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(282, 54);
-            this.groupBox7.TabIndex = 6;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Оборудование";
-            // 
-            // btn_add_equipment
-            // 
-            this.btn_add_equipment.Location = new System.Drawing.Point(6, 19);
-            this.btn_add_equipment.Name = "btn_add_equipment";
-            this.btn_add_equipment.Size = new System.Drawing.Size(270, 29);
-            this.btn_add_equipment.TabIndex = 3;
-            this.btn_add_equipment.Text = "добавить";
-            this.btn_add_equipment.UseVisualStyleBackColor = true;
-            this.btn_add_equipment.Click += new System.EventHandler(this.btn_add_equipment_Click);
             // 
             // groupBox3
             // 
@@ -185,7 +165,7 @@ namespace PerevoschikovRestorany
             // 
             // btn_update_equipments
             // 
-            this.btn_update_equipments.Location = new System.Drawing.Point(12, 126);
+            this.btn_update_equipments.Location = new System.Drawing.Point(12, 66);
             this.btn_update_equipments.Name = "btn_update_equipments";
             this.btn_update_equipments.Size = new System.Drawing.Size(270, 52);
             this.btn_update_equipments.TabIndex = 4;
@@ -248,9 +228,9 @@ namespace PerevoschikovRestorany
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(5, 58);
+            this.button1.Location = new System.Drawing.Point(6, 58);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(271, 29);
+            this.button1.Size = new System.Drawing.Size(270, 29);
             this.button1.TabIndex = 5;
             this.button1.Text = "добавить";
             this.button1.UseVisualStyleBackColor = true;
@@ -258,19 +238,38 @@ namespace PerevoschikovRestorany
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.tb_ser_num);
             this.groupBox1.Controls.Add(this.btn_add_to_stock);
             this.groupBox1.Location = new System.Drawing.Point(8, 165);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(282, 54);
+            this.groupBox1.Size = new System.Drawing.Size(282, 101);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "склад";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(143, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "серийный номер(5 знаков)";
+            // 
+            // tb_ser_num
+            // 
+            this.tb_ser_num.Location = new System.Drawing.Point(6, 37);
+            this.tb_ser_num.MaxLength = 5;
+            this.tb_ser_num.Name = "tb_ser_num";
+            this.tb_ser_num.Size = new System.Drawing.Size(270, 20);
+            this.tb_ser_num.TabIndex = 7;
+            // 
             // btn_add_to_stock
             // 
-            this.btn_add_to_stock.Location = new System.Drawing.Point(6, 19);
+            this.btn_add_to_stock.Location = new System.Drawing.Point(5, 63);
             this.btn_add_to_stock.Name = "btn_add_to_stock";
-            this.btn_add_to_stock.Size = new System.Drawing.Size(270, 29);
+            this.btn_add_to_stock.Size = new System.Drawing.Size(271, 29);
             this.btn_add_to_stock.TabIndex = 5;
             this.btn_add_to_stock.Text = "добавить на склад";
             this.btn_add_to_stock.UseVisualStyleBackColor = true;
@@ -308,18 +307,18 @@ namespace PerevoschikovRestorany
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btn_add_new_Equipment);
-            this.groupBox2.Location = new System.Drawing.Point(8, 225);
+            this.groupBox2.Location = new System.Drawing.Point(8, 272);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(282, 76);
+            this.groupBox2.Size = new System.Drawing.Size(282, 73);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Поставляемое оборудование";
             // 
             // btn_add_new_Equipment
             // 
-            this.btn_add_new_Equipment.Location = new System.Drawing.Point(6, 19);
+            this.btn_add_new_Equipment.Location = new System.Drawing.Point(5, 19);
             this.btn_add_new_Equipment.Name = "btn_add_new_Equipment";
-            this.btn_add_new_Equipment.Size = new System.Drawing.Size(270, 47);
+            this.btn_add_new_Equipment.Size = new System.Drawing.Size(271, 47);
             this.btn_add_new_Equipment.TabIndex = 6;
             this.btn_add_new_Equipment.Text = "добавить оборудование";
             this.btn_add_new_Equipment.UseVisualStyleBackColor = true;
@@ -327,9 +326,9 @@ namespace PerevoschikovRestorany
             // 
             // btn_update_Suppliers_equipment
             // 
-            this.btn_update_Suppliers_equipment.Location = new System.Drawing.Point(8, 307);
+            this.btn_update_Suppliers_equipment.Location = new System.Drawing.Point(14, 351);
             this.btn_update_Suppliers_equipment.Name = "btn_update_Suppliers_equipment";
-            this.btn_update_Suppliers_equipment.Size = new System.Drawing.Size(276, 52);
+            this.btn_update_Suppliers_equipment.Size = new System.Drawing.Size(270, 52);
             this.btn_update_Suppliers_equipment.TabIndex = 4;
             this.btn_update_Suppliers_equipment.Text = "обновить";
             this.btn_update_Suppliers_equipment.UseVisualStyleBackColor = true;
@@ -553,6 +552,16 @@ namespace PerevoschikovRestorany
             this.dgw_equipment_all.Size = new System.Drawing.Size(680, 410);
             this.dgw_equipment_all.TabIndex = 2;
             // 
+            // btn_do_document
+            // 
+            this.btn_do_document.Location = new System.Drawing.Point(12, 124);
+            this.btn_do_document.Name = "btn_do_document";
+            this.btn_do_document.Size = new System.Drawing.Size(270, 52);
+            this.btn_do_document.TabIndex = 6;
+            this.btn_do_document.Text = "Сформировать документ";
+            this.btn_do_document.UseVisualStyleBackColor = true;
+            this.btn_do_document.Click += new System.EventHandler(this.btn_do_document_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -564,13 +573,13 @@ namespace PerevoschikovRestorany
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgw_stock)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgw_suppliers)).EndInit();
@@ -600,7 +609,6 @@ namespace PerevoschikovRestorany
         private System.Windows.Forms.DataGridView dgw_restorany;
         private System.Windows.Forms.Button btn_add_restoran;
         private System.Windows.Forms.Button btn_Update_Restorany;
-        private System.Windows.Forms.Button btn_add_equipment;
         private System.Windows.Forms.Button btn_update_equipments;
         private System.Windows.Forms.Button btn_update_Suppliers_equipment;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -618,7 +626,6 @@ namespace PerevoschikovRestorany
         private System.Windows.Forms.ComboBox cb_rest_address_search1;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btn_move_to_stock;
-        private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tb_nazv_Restoran;
@@ -635,5 +642,8 @@ namespace PerevoschikovRestorany
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tb_supplier_naim;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tb_ser_num;
+        private System.Windows.Forms.Button btn_do_document;
     }
 }

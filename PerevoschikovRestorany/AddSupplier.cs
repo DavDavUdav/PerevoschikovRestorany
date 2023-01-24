@@ -32,7 +32,11 @@ namespace PerevoschikovRestorany
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            if (textBox1.Text==null)
+            {
+                MessageBox.Show("Заполните имя поставщика");
+            }
+
             _supplier = new Suppliers()
             { 
                 Name = textBox1.Text

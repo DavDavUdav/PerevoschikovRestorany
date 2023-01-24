@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace PerevoschikovRestorany
 {
@@ -65,6 +66,11 @@ namespace PerevoschikovRestorany
         
         private async void btn_add_restoran_Click(object sender, EventArgs e)
         {
+            if (tb_nazv_Restoran.Text == null || tb_addres_Restoran.Text == null)
+            {
+                MessageBox.Show("Заполните все поля");
+            }
+            
             var restoran = new Restoraunt()
             {
                 Name = tb_nazv_Restoran.Text,
@@ -96,9 +102,23 @@ namespace PerevoschikovRestorany
             */
         }
 
-        private void btn_add_to_stock_Click(object sender, EventArgs e)
+        private async void btn_add_to_stock_Click(object sender, EventArgs e)
         {
+            if (dgw_suppliers.SelectedRows.Count==0)
+            {
+                MessageBox.Show("Выберите оборудование из таблицы с которым хотите взаимодействовать");
+            }
+            
+            var activSelect = dgw_suppliers.SelectedRows[0].Cells;
 
+            var addstock = new Stock()
+            {
+                InfoEquipmentId = (int)activSelect[0].Value,
+                SerialNumber = tb_ser_num.Text,
+                RestorauntId = null
+            };
+            _dataStore.Stocks.Add(addstock);
+            await _dataStore.SaveChangesAsync();
         }
 
         /// <summary>
@@ -124,6 +144,12 @@ namespace PerevoschikovRestorany
         
         private async void btn_add_equipments_all_Click(object sender, EventArgs e)
         {
+            if (tb_naim_equipment.Text == null)
+            {
+                MessageBox.Show("Введите наименование оборудования");
+                return;
+            }
+
             var _equipment = new Equipment()
             {
                 Name = tb_naim_equipment.Text
@@ -139,18 +165,39 @@ namespace PerevoschikovRestorany
         #region editTable
         
         // переместить в ресторан
-        private void btn_move_to_restoran_Click(object sender, EventArgs e)
+        private async void btn_move_to_restoran_Click(object sender, EventArgs e)
         {
+            if (cb_rest_address_search1.SelectedText==null || dgw_stock.SelectedRows.Count==0)
+            {
+                MessageBox.Show("Вы не выбрали ресторан или не выделили оборудование с которым хотите взаимодействовать");
+            }
 
+            await MoveEquipmentStockToRest();
         }
         
+        
+
         // переместить на склад
         /// <summary>
         /// Перемещение на склад
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btn_move_to_stock_Click(object sender, EventArgs e)
+        private async void btn_move_to_stock_Click(object sender, EventArgs e)
+        {
+
+            if (dgw_restorany.SelectedRows.Count<1)
+            {
+                MessageBox.Show("Выберите оборудование из таблицы");
+                return;
+            }
+
+            await TaskMoveSklad();
+            await GetIdrest();
+            
+        }
+
+        private async Task TaskMoveSklad()
         {
             int _get_id_equip = (int)dgw_restorany.SelectedRows[0].Cells[0].Value;
 
@@ -158,19 +205,31 @@ namespace PerevoschikovRestorany
                 .Where(p => p.Id == _get_id_equip)
                 .FirstOrDefault();
             edit.RestorauntId = null;
-            _dataStore.SaveChangesAsync();
+            await _dataStore.SaveChangesAsync();
         }
+
         #endregion editTable
 
         #region search
 
         private async void btn_search_supplier_Click(object sender, EventArgs e)
         {
+            if (cb_suppliers_search.SelectedItem==null)
+            {
+                MessageBox.Show("Выберите поставщика");
+                return;
+            }
             await GetIdSuppliers();
         }
 
         private async void btn_search_restoran_address_Click(object sender, EventArgs e)
         {
+            if (cb_rest_address_search.SelectedText.Length == 0)
+            {
+                MessageBox.Show("Выберите ресторан, оборудование которого хотите просмотреть");
+                return;
+            }
+            
             await GetIdrest();
 
             
@@ -185,6 +244,42 @@ namespace PerevoschikovRestorany
                     Id = x.Id
                 }).ToArrayAsync();
             await UpdateEquipmentSupplier(_idSupplier[0].Id);
+        }
+
+
+        /// <summary>
+        /// перемещение в ресторан
+        /// </summary>
+        /// <returns></returns>
+        private async Task MoveEquipmentStockToRest()
+        {
+            var _id = await _dataStore.Restoraunts
+                .Where(p => p.Address == cb_rest_address_search1.Text)
+                .Select(x => new RestorauntsTable()
+                {
+                    Id = x.Id
+                }).ToArrayAsync();
+
+            int _get_id_equip = (int)dgw_stock.SelectedRows[0].Cells[0].Value;
+
+            var edit = _dataStore.Stocks
+                .Where(p => p.Id == _get_id_equip)
+                .FirstOrDefault();
+            edit.RestorauntId = _id[0].Id;
+            await _dataStore.SaveChangesAsync();
+            await UpdateEquipmentInStock();
+
+        }
+
+        private async Task GetIdrest1()
+        {
+            var _id = await _dataStore.Restoraunts
+                .Where(p => p.Address == cb_rest_address_search.Text)
+                .Select(x => new RestorauntsTable()
+                {
+                    Id = x.Id
+                }).ToArrayAsync();
+            await UpdateEquipmentInRestoraunt(_id[0].Id);
         }
 
         private async Task GetIdrest()
@@ -344,6 +439,11 @@ namespace PerevoschikovRestorany
             dgw_restorany.DataSource = equipmentInRestoran;
         }
 
+        /// <summary>
+        /// Обновление DataGridView оборудование у конкретного поставщика
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <returns></returns>
         private async Task UpdateEquipmentSupplier(int _id)
         {
             var equipSupplier = await _dataStore.InfoEquipment
@@ -389,7 +489,8 @@ namespace PerevoschikovRestorany
         // узнать откуда
         private async void btn_update_equipments_Click(object sender, EventArgs e)
         {
-            await UpdateEquipment();
+            await UpdateEquipmentInStock();
+
         }
 
         private void btn_update_Suppliers_equipment_Click(object sender, EventArgs e)
@@ -490,9 +591,86 @@ namespace PerevoschikovRestorany
 
 
         // добавление поставщика
-        private void button1_Click_1(object sender, EventArgs e)
+        private async void button1_Click_1(object sender, EventArgs e)
         {
+            if(tb_supplier_naim.Text == null || tb_supplier_naim.Text.Length<3)
+            {
+                MessageBox.Show("заполните имя поставщика перед тем как его добавить");
+            }
 
+            var post = new Suppliers()
+            {
+                Name = tb_supplier_naim.Text
+            };
+
+            _dataStore.Suppliers.Add(post);
+            await _dataStore.SaveChangesAsync();
+
+            tb_supplier_naim.Text = "";
+            await UpdateNaimSuppliersSearch();
+        }
+
+        private void btn_do_document_Click(object sender, EventArgs e)
+        {
+            /*
+            Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Workbook ExcelWorkBook;
+            Microsoft.Office.Interop.Excel.Worksheet ExcelWorkSheet;
+            //Книга.
+            ExcelWorkBook = ExcelApp.Workbooks.Add(System.Reflection.Missing.Value);
+            //Таблица.
+            ExcelWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ExcelWorkBook.Worksheets.get_Item(1);
+            //Название таблицы
+            ExcelApp.Cells[3, 1] = "Склад";
+            //Цикл для заполнения названий столбцов таблицы
+            for (int i = 1; i < dgw_stock.Columns.Count; i++)
+            {
+                ExcelApp.Cells[dgw_stock.Columns.Count, i] = dgw_stock.Columns[i].HeaderText;
+            }
+            //Заполнение таблицы данными
+            for (int i = 0; i < dgw_stock.Rows.Count; i++)
+            {
+                for (int j = 0; j < dgw_stock.Columns.Count, j++)
+                {
+                    ExcelApp.Cells[i + 6, j + 1] = dgw_stock[i, j].Value.ToString();
+                }
+            }
+            //Вызываем нашу созданную эксельку.
+            ExcelApp.Columns.BorderAround2();
+            ExcelApp.Columns.ColumnWidth = 30;
+            ExcelApp.Visible = true;
+            ExcelApp.UserControl = true;
+            */
+
+            
+            Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
+            ExcelApp.Workbooks.Add();
+            //Excel.Worksheets wsh = (Excel.Worksheets)ExcelApp.ActiveSheet;
+            ExcelApp.Cells[1, 1] = "Склад";
+
+
+            ExcelApp.Cells[2, 1] = "№";
+            ExcelApp.Cells[2, 2] = "Оборудование";
+            ExcelApp.Cells[2, 3] = "Поставщик";
+            ExcelApp.Cells[2, 4] = "Серийный номер";
+            ExcelApp.Cells[2, 5] = "Цена";
+
+            //Заполнение таблицы данными
+            for (int i = 0; i < dgw_stock.Columns.Count; i++)
+            {
+                for (int j = 0; j < dgw_stock.Rows.Count; j++)
+                {
+                    ExcelApp.Cells[j + 3, i + 1] = (dgw_stock[i, j].Value).ToString();
+                }
+            }
+
+            dynamic sheet = ExcelApp.ActiveSheet;
+            sheet.Columns.EntireColumn.AutoFit();
+
+            //Вызываем нашу созданную эксельку.
+            ExcelApp.Visible = true;
+            ExcelApp.UserControl = true;
+            
         }
     }
 
@@ -516,35 +694,51 @@ namespace PerevoschikovRestorany
     // для вывода поставщиков
     public class SuppliersTable
     {
+        [Display(Name = "№")]
         public int SuppliersId { get; set; }
+        [Display(Name = "Поставщик")]
         public string Name { get; set; }
     }
 
     // для вывода ресторанов
     public class RestorauntsTable
     {
+        [Display(Name = "№")]
         public int Id { get; set; }
+        [Display(Name = "Ресторан")]
         public string Name { get; set; }
+        [Display(Name = "Адрес")]
         public string Address { get; set; }
     }
 
     public class EquipmentStockTable
     {
+        [Display(Name = "№")]
         public int Id { get; set; }
+        [Display(Name = "Оборудование")]
         public string NameEquipment { get; set; }
+        [Display(Name = "Поставщик")]
         public string NameSupplier { get; set; }
         //public string AddressRestoran { get; set; }
+        [Display(Name = "Серийный номер")]
         public string SerialNumber { get; set; }
+        [Display(Name = "Цена")]
         public int Price { get; set; }
     }
 
     public class EquipmentRestorauntTable
     {
+        [Display(Name = "№")]
         public int Id { get; set; }
+        [Display(Name ="Оборудование")]
         public string NameEquipment { get; set; }
+        [Display(Name ="Поставщик")]
         public string NameSupplier { get; set; }
+        [Display(Name ="Адрес")]
         public string AddressRestoran { get; set; }
+        [Display(Name ="Серийный номер")]
         public string SerialNumber { get; set; }
+        [Display(Name ="Цена")]
         public int Price { get; set; }
     }
 
@@ -566,8 +760,11 @@ namespace PerevoschikovRestorany
 
     public class EquipmentSuppliers
     {
+        [Display(Name ="№")]
         public int Id { get; set; }
+        [Display(Name = "Оборудование")]
         public string NameEquipment { get; set; }
+        [Display(Name = "Цена")]
         public int Price { get; set; }
     }
 

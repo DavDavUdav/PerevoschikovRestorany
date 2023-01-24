@@ -107,4 +107,12 @@ namespace PerevoschikovRestorany.DataStore
         [MinLength(5), Required]
         public string Password { get; set; }
     }
+    /*
+    public class Statistics
+    {
+        public int Id { get; set; }
+        public string Action { get; set; }
+        public DateTime DateTime { get; set; }
+    }
+    */
 }
