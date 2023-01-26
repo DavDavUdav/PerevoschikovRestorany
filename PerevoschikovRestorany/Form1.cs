@@ -15,29 +15,82 @@ namespace PerevoschikovRestorany
 {
     public partial class Form1 : Form
     {
+        public DataStore.DataStore _dataStore { get; set; }
+
         public Form1()
         {
+            _dataStore = new DataStore.DataStore();
+            _dataStore.Database.EnsureCreated();
             InitializeComponent();
+            LoadInfo();
         }
 
-        private void btn_logIn_Click(object sender, EventArgs e)
+        public async void LoadInfo()
         {
+            await GetLoginUsers();
+        }
+
+        private async void btn_logIn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await CheckPass();
+            }
+            catch
+            {
+                MessageBox.Show("Проверьте имя пользователя и пароль");
+            }
             
-            
-            if ((tb_login.Text == "Admin" && tb_password.Text=="admin") || (tb_login.Text == "User" && tb_password.Text == "user") )
+        }
+
+        private async Task CheckPass()
+        {
+            var login = await _dataStore.Users
+                .Where(p => p.Name==cb_login.SelectedItem.ToString())
+                .Select(x => new Users()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Password = x.Password
+                }).ToArrayAsync();
+            if (tb_password.Text==login[0].Password)
             {
                 var activeMainForm = new MainForm();
                 activeMainForm.Show();
+                if (cb_login.SelectedItem.ToString() == "admin")
+                {
+                    activeMainForm.isAdmin = true;
+                }
+                else
+                {
+                    activeMainForm.isAdmin = false;
+                }
             }
             else
             {
-                MessageBox.Show("Введены неверные данные");
+                MessageBox.Show("Проверьте имя пользователя и пароль");
             }
             
-            //this.Close();
+        }
+
+        private async Task GetLoginUsers()
+        {
+            var login = await _dataStore.Users
+                .Select(x => new Users() 
+                { 
+                    Id=x.Id,
+                    Name =x.Name,
+                    Password = x.Password
+                }).ToArrayAsync();
+
+            cb_login.Items.Clear();
+
+            foreach (var item in login)
+            {
+                cb_login.Items.Add(item.Name);
+            }
         }
     }
-
     public class Users
     {
         public int Id { get; set; }

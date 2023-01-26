@@ -29,9 +29,17 @@ namespace PerevoschikovRestorany
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.chart_statistics = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.btn_update_statistics = new System.Windows.Forms.Button();
+            this.dgw_statistics = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btn_do_document = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btn_move_to_restoran = new System.Windows.Forms.Button();
             this.cb_rest_address_search1 = new System.Windows.Forms.ComboBox();
@@ -61,6 +69,8 @@ namespace PerevoschikovRestorany
             this.label1 = new System.Windows.Forms.Label();
             this.tb_addres_Restoran = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cb_status_equipment = new System.Windows.Forms.ComboBox();
             this.btn_move_to_stock = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btn_search_restoran_address = new System.Windows.Forms.Button();
@@ -74,8 +84,11 @@ namespace PerevoschikovRestorany
             this.tb_naim_equipment = new System.Windows.Forms.TextBox();
             this.btn_add_equipments_all = new System.Windows.Forms.Button();
             this.dgw_equipment_all = new System.Windows.Forms.DataGridView();
-            this.btn_do_document = new System.Windows.Forms.Button();
+            this.pieChart1 = new LiveCharts.WinForms.PieChart();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart_statistics)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgw_statistics)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgw_stock)).BeginInit();
@@ -112,6 +125,11 @@ namespace PerevoschikovRestorany
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.pieChart1);
+            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.chart_statistics);
+            this.tabPage1.Controls.Add(this.btn_update_statistics);
+            this.tabPage1.Controls.Add(this.dgw_statistics);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -119,6 +137,52 @@ namespace PerevoschikovRestorany
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "статистика";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(232, 6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(223, 32);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Обновить диаграмму";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // chart_statistics
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.chart_statistics.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart_statistics.Legends.Add(legend3);
+            this.chart_statistics.Location = new System.Drawing.Point(854, 347);
+            this.chart_statistics.Name = "chart_statistics";
+            this.chart_statistics.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Excel;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chart_statistics.Series.Add(series3);
+            this.chart_statistics.Size = new System.Drawing.Size(122, 69);
+            this.chart_statistics.TabIndex = 2;
+            this.chart_statistics.Text = "chart1";
+            // 
+            // btn_update_statistics
+            // 
+            this.btn_update_statistics.Location = new System.Drawing.Point(8, 6);
+            this.btn_update_statistics.Name = "btn_update_statistics";
+            this.btn_update_statistics.Size = new System.Drawing.Size(218, 32);
+            this.btn_update_statistics.TabIndex = 1;
+            this.btn_update_statistics.Text = "Обновить таблицу";
+            this.btn_update_statistics.UseVisualStyleBackColor = true;
+            this.btn_update_statistics.Click += new System.EventHandler(this.btn_update_statistics_Click);
+            // 
+            // dgw_statistics
+            // 
+            this.dgw_statistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgw_statistics.Location = new System.Drawing.Point(8, 44);
+            this.dgw_statistics.Name = "dgw_statistics";
+            this.dgw_statistics.Size = new System.Drawing.Size(447, 372);
+            this.dgw_statistics.TabIndex = 0;
             // 
             // tabPage2
             // 
@@ -133,6 +197,16 @@ namespace PerevoschikovRestorany
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Склад";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btn_do_document
+            // 
+            this.btn_do_document.Location = new System.Drawing.Point(12, 124);
+            this.btn_do_document.Name = "btn_do_document";
+            this.btn_do_document.Size = new System.Drawing.Size(270, 52);
+            this.btn_do_document.TabIndex = 6;
+            this.btn_do_document.Text = "Сформировать документ";
+            this.btn_do_document.UseVisualStyleBackColor = true;
+            this.btn_do_document.Click += new System.EventHandler(this.btn_do_document_Click);
             // 
             // groupBox3
             // 
@@ -416,17 +490,39 @@ namespace PerevoschikovRestorany
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label6);
+            this.groupBox6.Controls.Add(this.cb_status_equipment);
             this.groupBox6.Controls.Add(this.btn_move_to_stock);
             this.groupBox6.Location = new System.Drawing.Point(6, 200);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(282, 49);
+            this.groupBox6.Size = new System.Drawing.Size(282, 95);
             this.groupBox6.TabIndex = 7;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Оборудование";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(60, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "состояние";
+            // 
+            // cb_status_equipment
+            // 
+            this.cb_status_equipment.FormattingEnabled = true;
+            this.cb_status_equipment.Items.AddRange(new object[] {
+            "Б/У",
+            "Неисправно"});
+            this.cb_status_equipment.Location = new System.Drawing.Point(6, 39);
+            this.cb_status_equipment.Name = "cb_status_equipment";
+            this.cb_status_equipment.Size = new System.Drawing.Size(270, 21);
+            this.cb_status_equipment.TabIndex = 2;
+            // 
             // btn_move_to_stock
             // 
-            this.btn_move_to_stock.Location = new System.Drawing.Point(6, 19);
+            this.btn_move_to_stock.Location = new System.Drawing.Point(6, 66);
             this.btn_move_to_stock.Name = "btn_move_to_stock";
             this.btn_move_to_stock.Size = new System.Drawing.Size(270, 23);
             this.btn_move_to_stock.TabIndex = 2;
@@ -443,7 +539,7 @@ namespace PerevoschikovRestorany
             this.groupBox4.Size = new System.Drawing.Size(282, 48);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Адрес ресторана";
+            this.groupBox4.Text = "Имя ресторана";
             // 
             // btn_search_restoran_address
             // 
@@ -465,7 +561,7 @@ namespace PerevoschikovRestorany
             // 
             // btn_Update_Restorany
             // 
-            this.btn_Update_Restorany.Location = new System.Drawing.Point(11, 255);
+            this.btn_Update_Restorany.Location = new System.Drawing.Point(6, 301);
             this.btn_Update_Restorany.Name = "btn_Update_Restorany";
             this.btn_Update_Restorany.Size = new System.Drawing.Size(270, 52);
             this.btn_Update_Restorany.TabIndex = 3;
@@ -552,15 +648,13 @@ namespace PerevoschikovRestorany
             this.dgw_equipment_all.Size = new System.Drawing.Size(680, 410);
             this.dgw_equipment_all.TabIndex = 2;
             // 
-            // btn_do_document
+            // pieChart1
             // 
-            this.btn_do_document.Location = new System.Drawing.Point(12, 124);
-            this.btn_do_document.Name = "btn_do_document";
-            this.btn_do_document.Size = new System.Drawing.Size(270, 52);
-            this.btn_do_document.TabIndex = 6;
-            this.btn_do_document.Text = "Сформировать документ";
-            this.btn_do_document.UseVisualStyleBackColor = true;
-            this.btn_do_document.Click += new System.EventHandler(this.btn_do_document_Click);
+            this.pieChart1.Location = new System.Drawing.Point(461, 7);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(503, 334);
+            this.pieChart1.TabIndex = 4;
+            this.pieChart1.Text = "pieChart1";
             // 
             // MainForm
             // 
@@ -572,6 +666,9 @@ namespace PerevoschikovRestorany
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart_statistics)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgw_statistics)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgw_stock)).EndInit();
@@ -587,6 +684,7 @@ namespace PerevoschikovRestorany
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgw_restorany)).EndInit();
             this.tabPage5.ResumeLayout(false);
@@ -645,5 +743,12 @@ namespace PerevoschikovRestorany
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tb_ser_num;
         private System.Windows.Forms.Button btn_do_document;
+        private System.Windows.Forms.DataGridView dgw_statistics;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart_statistics;
+        private System.Windows.Forms.Button btn_update_statistics;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cb_status_equipment;
+        private LiveCharts.WinForms.PieChart pieChart1;
     }
 }

@@ -17,6 +17,7 @@ namespace PerevoschikovRestorany.DataStore
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Restoraunt> Restoraunts { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<Statistics> Statistics { get; set; }
 
         /*
         public DbSet<EquipmentRestoraunt> Equipments { get; set; }
@@ -30,12 +31,19 @@ namespace PerevoschikovRestorany.DataStore
         // строка подключения
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-L93R2E4;Database=Perevoschikov;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-L93R2E4;Database=myTestDBRestorany;Trusted_Connection=True;");
         }
 
         public DataStore()
         {
             Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 
@@ -82,6 +90,8 @@ namespace PerevoschikovRestorany.DataStore
         public string SerialNumber { get; set; }
         
         public int? RestorauntId { get; set; }
+        [Required, MaxLength(10)]
+        public string status { get; set; }
 
         
         public InfoEquipment InfoEquipment { get; set; } // склад может иметь много оборудования
@@ -107,12 +117,12 @@ namespace PerevoschikovRestorany.DataStore
         [MinLength(5), Required]
         public string Password { get; set; }
     }
-    /*
+    
     public class Statistics
     {
         public int Id { get; set; }
         public string Action { get; set; }
         public DateTime DateTime { get; set; }
     }
-    */
+    
 }

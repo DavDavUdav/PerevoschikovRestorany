@@ -84,6 +84,7 @@ namespace PerevoschikovRestorany
             if (cb_equipment.SelectedText==null || cb_suppliers_name.SelectedText==null || tb_price.Text==null)
             {
                 MessageBox.Show("вы не ввели цену или не выбрали поставщиков или оборудование");
+                return;
             }
             
             var _nameEquip = await _dataStore.Equipment

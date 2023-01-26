@@ -2,17 +2,26 @@
 using PerevoschikovRestorany.DataStore;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+//using System.Windows.Forms.DataVisualization.Charting;
 using Excel = Microsoft.Office.Interop.Excel;
+using LiveCharts; //Core of the library
+//using LiveCharts.Wpf; //The WPF controls
+using LiveCharts.WinForms; //the WinForm wrappers
+using LiveCharts.Wpf;
+using System.Collections.Generic;
 
 namespace PerevoschikovRestorany
 {
     public partial class MainForm : Form
     {
         public DataStore.DataStore _dataStore { get; set; }
-        
+
+        public bool isAdmin;
+
         public MainForm()
         {
             _dataStore = new DataStore.DataStore();
@@ -39,12 +48,31 @@ namespace PerevoschikovRestorany
             await UpdateSuppliers();
             await UpdateEquipmentInStock();
             //await UpdateEquipmentInRestoraunt(1);
+            await UpdateEStatistics();
+
+
 
             await UpdateNaimRest();
             await UpdateNaimSuppliersSearch();
+
+            if (isAdmin == false)
+            {
+                IsUser();
+            }
+
         }
 
-       
+        public void IsUser()
+        {
+            btn_add_equipments_all.Enabled = false;
+            btn_add_new_Equipment.Enabled = false;
+            btn_add_restoran.Enabled = false;
+            btn_add_to_stock.Enabled = false;
+            //btn_do_document.Enabled = false;
+            btn_move_to_restoran.Enabled = false;
+            btn_move_to_stock.Enabled = false;
+            button1.Enabled = false;
+        }
 
         #region addInTable
         //пример
@@ -63,14 +91,14 @@ namespace PerevoschikovRestorany
             UpdateSuppliers();
         }
 
-        
+
         private async void btn_add_restoran_Click(object sender, EventArgs e)
         {
-            if (tb_nazv_Restoran.Text == null || tb_addres_Restoran.Text == null)
+            if (tb_nazv_Restoran.Text == "" || tb_addres_Restoran.Text == "")
             {
                 MessageBox.Show("Заполните все поля");
             }
-            
+
             var restoran = new Restoraunt()
             {
                 Name = tb_nazv_Restoran.Text,
@@ -104,18 +132,25 @@ namespace PerevoschikovRestorany
 
         private async void btn_add_to_stock_Click(object sender, EventArgs e)
         {
-            if (dgw_suppliers.SelectedRows.Count==0)
+            if (tb_ser_num.Text.Length < 5)
+            {
+                MessageBox.Show("Серийный номер должен состоять из 5 символов");
+
+            }
+            if (dgw_suppliers.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Выберите оборудование из таблицы с которым хотите взаимодействовать");
+                return;
             }
-            
+
             var activSelect = dgw_suppliers.SelectedRows[0].Cells;
 
             var addstock = new Stock()
             {
                 InfoEquipmentId = (int)activSelect[0].Value,
                 SerialNumber = tb_ser_num.Text,
-                RestorauntId = null
+                RestorauntId = null,
+                status = "Новое"
             };
             _dataStore.Stocks.Add(addstock);
             await _dataStore.SaveChangesAsync();
@@ -132,19 +167,19 @@ namespace PerevoschikovRestorany
             addOborudovanie.ShowDialog();
 
             var _equipment = addOborudovanie.GetEqupment();
-            if (_equipment !=null)
+            if (_equipment != null)
             {
                 _dataStore.InfoEquipment.Add(_equipment);
                 await _dataStore.SaveChangesAsync();
-                
+
             }
 
             await GetIdSuppliers();
         }
-        
+
         private async void btn_add_equipments_all_Click(object sender, EventArgs e)
         {
-            if (tb_naim_equipment.Text == null)
+            if (tb_naim_equipment.Text == "")
             {
                 MessageBox.Show("Введите наименование оборудования");
                 return;
@@ -163,19 +198,22 @@ namespace PerevoschikovRestorany
         #endregion addIntable
 
         #region editTable
-        
+
         // переместить в ресторан
         private async void btn_move_to_restoran_Click(object sender, EventArgs e)
         {
-            if (cb_rest_address_search1.SelectedText==null || dgw_stock.SelectedRows.Count==0)
+            // test
+
+            if (cb_rest_address_search1.SelectedText == null || dgw_stock.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Вы не выбрали ресторан или не выделили оборудование с которым хотите взаимодействовать");
+                return;
             }
 
             await MoveEquipmentStockToRest();
         }
-        
-        
+
+
 
         // переместить на склад
         /// <summary>
@@ -186,18 +224,20 @@ namespace PerevoschikovRestorany
         private async void btn_move_to_stock_Click(object sender, EventArgs e)
         {
 
-            if (dgw_restorany.SelectedRows.Count<1)
+            if (dgw_restorany.SelectedRows.Count < 1)
             {
                 MessageBox.Show("Выберите оборудование из таблицы");
                 return;
             }
 
-            await TaskMoveSklad();
+
+
+            await TaskMoveSklad(cb_status_equipment.SelectedItem.ToString());
             await GetIdrest();
-            
+
         }
 
-        private async Task TaskMoveSklad()
+        private async Task TaskMoveSklad(string status)
         {
             int _get_id_equip = (int)dgw_restorany.SelectedRows[0].Cells[0].Value;
 
@@ -205,6 +245,7 @@ namespace PerevoschikovRestorany
                 .Where(p => p.Id == _get_id_equip)
                 .FirstOrDefault();
             edit.RestorauntId = null;
+            edit.status = status;
             await _dataStore.SaveChangesAsync();
         }
 
@@ -214,7 +255,7 @@ namespace PerevoschikovRestorany
 
         private async void btn_search_supplier_Click(object sender, EventArgs e)
         {
-            if (cb_suppliers_search.SelectedItem==null)
+            if (cb_suppliers_search.SelectedItem == null)
             {
                 MessageBox.Show("Выберите поставщика");
                 return;
@@ -224,23 +265,23 @@ namespace PerevoschikovRestorany
 
         private async void btn_search_restoran_address_Click(object sender, EventArgs e)
         {
-            if (cb_rest_address_search.SelectedText.Length == 0)
+            if (cb_rest_address_search.SelectedItem == null)
             {
                 MessageBox.Show("Выберите ресторан, оборудование которого хотите просмотреть");
                 return;
             }
-            
+
             await GetIdrest();
 
-            
+
         }
 
         private async Task GetIdSuppliers()
         {
             var _idSupplier = await _dataStore.Suppliers
                 .Where(p => p.Name == cb_suppliers_search.SelectedItem.ToString())
-                .Select(x => new EquipmentSuppliers 
-                { 
+                .Select(x => new EquipmentSuppliers
+                {
                     Id = x.Id
                 }).ToArrayAsync();
             await UpdateEquipmentSupplier(_idSupplier[0].Id);
@@ -254,7 +295,7 @@ namespace PerevoschikovRestorany
         private async Task MoveEquipmentStockToRest()
         {
             var _id = await _dataStore.Restoraunts
-                .Where(p => p.Address == cb_rest_address_search1.Text)
+                .Where(p => p.Name == cb_rest_address_search1.SelectedItem)
                 .Select(x => new RestorauntsTable()
                 {
                     Id = x.Id
@@ -285,7 +326,7 @@ namespace PerevoschikovRestorany
         private async Task GetIdrest()
         {
             var _id = await _dataStore.Restoraunts
-                .Where(p => p.Address == cb_rest_address_search.Text)
+                .Where(p => p.Name == cb_rest_address_search.Text)
                 .Select(x => new RestorauntsTable()
                 {
                     Id = x.Id
@@ -304,7 +345,7 @@ namespace PerevoschikovRestorany
             var naimRest = await _dataStore.Restoraunts
                .Select(x => new RestorauntsTable()
                {
-                   Address = x.Address
+                   Name = x.Name
                }).ToArrayAsync();
 
             cb_rest_address_search.Items.Clear();
@@ -312,8 +353,8 @@ namespace PerevoschikovRestorany
 
             foreach (var item in naimRest)
             {
-                cb_rest_address_search.Items.Add(item.Address);
-                cb_rest_address_search1.Items.Add(item.Address);
+                cb_rest_address_search.Items.Add(item.Name);
+                cb_rest_address_search1.Items.Add(item.Name);
             }
         }
 
@@ -361,14 +402,32 @@ namespace PerevoschikovRestorany
         private async Task UpdateEquipment()
         {
             var _equipment = await _dataStore.Equipment
-                .Select(x => new EquipmentTable() 
-                { 
+                .Select(x => new EquipmentTable()
+                {
                     Id = x.Id,
-                    Name =x.Name
+                    Name = x.Name
                 }).ToListAsync();
 
             //dgw_equipment_all.Rows.Clear();
             dgw_equipment_all.DataSource = _equipment;
+        }
+
+        /// <summary>
+        /// обновление dgw статистики
+        /// </summary>
+        /// <returns></returns>
+        private async Task UpdateEStatistics()
+        {
+            var _stats = await _dataStore.Statistics
+                .Select(x => new StatisticsTable()
+                {
+                    Id = x.Id,
+                    Action = x.Action,
+                    DateTime = x.DateTime
+                }).ToListAsync();
+
+            //dgw_equipment_all.Rows.Clear();
+            dgw_statistics.DataSource = _stats;
         }
 
         /// <summary>
@@ -399,15 +458,16 @@ namespace PerevoschikovRestorany
                 .Include(x => x.InfoEquipment.Equipment)
                 .Include(x => x.InfoEquipment.Suppliers)
                 .Where(p => p.Restoraunt == null)
-                .Select(x => new EquipmentStockTable() 
-                { 
+                .Select(x => new EquipmentStockTable()
+                {
                     Id = x.Id,
                     NameEquipment = x.InfoEquipment.Equipment.Name,
                     NameSupplier = x.InfoEquipment.Suppliers.Name,
                     //AddressRestoran = x.Restoraunt.Name,
                     SerialNumber = x.SerialNumber,
-                    Price = x.InfoEquipment.Price
-                    
+                    Price = x.InfoEquipment.Price,
+                    Status = x.status
+
                 }).ToListAsync();
 
             dgw_stock.DataSource = equipmentInStock;
@@ -448,8 +508,8 @@ namespace PerevoschikovRestorany
         {
             var equipSupplier = await _dataStore.InfoEquipment
                 .Where(p => p.SuppliersId == _id)
-                .Select(x => new EquipmentSuppliers() 
-                { 
+                .Select(x => new EquipmentSuppliers()
+                {
                     Id = x.Id,
                     NameEquipment = x.Equipment.Name,
                     Price = x.Price
@@ -485,7 +545,7 @@ namespace PerevoschikovRestorany
             
         }
         */
-        
+
         // узнать откуда
         private async void btn_update_equipments_Click(object sender, EventArgs e)
         {
@@ -503,7 +563,7 @@ namespace PerevoschikovRestorany
         {
             UpdateRestoraunts();
         } // готово
-        
+
         // обновление оборудования
         private async void button1_Click(object sender, EventArgs e)
         {
@@ -541,7 +601,7 @@ namespace PerevoschikovRestorany
 
         }
         */
-        
+
 
         // вывод значений поставщиков
         /*
@@ -566,12 +626,12 @@ namespace PerevoschikovRestorany
             
         }
         */
-        
 
-        
+
+
 
         // Кнопка добавления оборудования
-        
+
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -593,7 +653,7 @@ namespace PerevoschikovRestorany
         // добавление поставщика
         private async void button1_Click_1(object sender, EventArgs e)
         {
-            if(tb_supplier_naim.Text == null || tb_supplier_naim.Text.Length<3)
+            if (tb_supplier_naim.Text == "" || tb_supplier_naim.Text.Length < 3)
             {
                 MessageBox.Show("заполните имя поставщика перед тем как его добавить");
             }
@@ -642,7 +702,7 @@ namespace PerevoschikovRestorany
             ExcelApp.UserControl = true;
             */
 
-            
+
             Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
             ExcelApp.Workbooks.Add();
             //Excel.Worksheets wsh = (Excel.Worksheets)ExcelApp.ActiveSheet;
@@ -670,103 +730,178 @@ namespace PerevoschikovRestorany
             //Вызываем нашу созданную эксельку.
             ExcelApp.Visible = true;
             ExcelApp.UserControl = true;
-            
+
         }
+
+        private async void btn_update_statistics_Click(object sender, EventArgs e)
+        {
+            await UpdateEStatistics();
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            var _statistics = _dataStore.Statistics
+                .ToList();
+            var _group = _statistics.GroupBy(x => x.Action).ToArray();
+            // PieChartExample(_group);
+
+            var countEdit = _group[0].Count();
+            var countAdd = _group[1].Count();
+
+            PieChartExample(countAdd, countEdit);
+            /*
+                        chart_statistics.Series[0] = new System.Windows.Forms.DataVisualization.Charting.Series();
+
+
+
+                        chart_statistics.Series[0].XValueMember = "ads";
+                        chart_statistics.Series[0].YValueMembers = "ddfs";
+
+                        chart_statistics.DataSource = _group.Keys;
+
+                        chart_statistics.Series[0].ChartType = SeriesChartType.Pie;
+                        */
+        }
+
+        //todo: do
+        public void PieChartExample(int countAdd, int countEdit)
+        {
+            Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
+            SeriesCollection piechartData = new SeriesCollection
+            {
+                new PieSeries
+                {
+                    Title = "Добавление",
+                    Values = new ChartValues<double> {countAdd},
+                    DataLabels = true,
+                    LabelPoint = labelPoint,
+
+                    // Define a custom Color 
+                    Fill = System.Windows.Media.Brushes.Gray
+                },
+                new PieSeries
+                {
+                    Title = "Изменение",
+                    Values = new ChartValues<double> {countEdit},
+                    DataLabels = true,
+                    LabelPoint = labelPoint,
+                    Fill = System.Windows.Media.Brushes.Green,
+                    PushOut = 15
+                }
+            };
+
+
+            // Define the collection of Values to display in the Pie Chart
+            pieChart1.Series = piechartData;
+
+            // Set the legend location to appear in the bottom of the chart
+            pieChart1.LegendLocation = LegendLocation.Right;
+
+        }
+
+        #region printClass
+
+        public class StatisticsTable
+        {
+            public int Id { get; set; }
+            public string Action { get; set; }
+            public DateTime DateTime { get; set; }
+        }
+
+        //Класс для вывода
+        /*
+        public class EquipmentTable
+        {
+            [Display(Name = "№")]
+            public int EquipmentId { get; set; }
+            public string Name { get; set; }
+            public string Serial { get; set; }
+            public string RestoranName { get; set; }
+            public string Address { get; set; }
+            public DateTime ReciptDate { get; set; }
+            public string SupplerName { get; set; }
+        }
+        */
+
+        // для вывода поставщиков
+        public class SuppliersTable
+        {
+            [Display(Name = "№")]
+            public int SuppliersId { get; set; }
+            [Display(Name = "Поставщик")]
+            public string Name { get; set; }
+        }
+
+        // для вывода ресторанов
+        public class RestorauntsTable
+        {
+            [Display(Name = "№")]
+            public int Id { get; set; }
+            [Display(Name = "Ресторан")]
+            public string Name { get; set; }
+            [Display(Name = "Адрес")]
+            public string Address { get; set; }
+        }
+
+        public class EquipmentStockTable
+        {
+            [Display(Name = "№")]
+            public int Id { get; set; }
+            [Display(Name = "Оборудование")]
+            public string NameEquipment { get; set; }
+            [Display(Name = "Поставщик")]
+            public string NameSupplier { get; set; }
+            //public string AddressRestoran { get; set; }
+            [Display(Name = "Серийный номер")]
+            public string SerialNumber { get; set; }
+            [Display(Name = "Цена")]
+            public int Price { get; set; }
+            public string Status { get; set; }
+        }
+
+        public class EquipmentRestorauntTable
+        {
+            [Display(Name = "№")]
+            public int Id { get; set; }
+            [Display(Name = "Оборудование")]
+            public string NameEquipment { get; set; }
+            [Display(Name = "Поставщик")]
+            public string NameSupplier { get; set; }
+            [Display(Name = "Адрес")]
+            public string AddressRestoran { get; set; }
+            [Display(Name = "Серийный номер")]
+            public string SerialNumber { get; set; }
+            [Display(Name = "Цена")]
+            public int Price { get; set; }
+        }
+
+        public class NaimResttable
+        {
+            public string Id { get; set; }
+        }
+
+        public class NaimSuppliersTable
+        {
+            public string Name { get; set; }
+        }
+
+        public class EquipmentTable
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        public class EquipmentSuppliers
+        {
+            [Display(Name = "№")]
+            public int Id { get; set; }
+            [Display(Name = "Оборудование")]
+            public string NameEquipment { get; set; }
+            [Display(Name = "Цена")]
+            public int Price { get; set; }
+        }
+
+        #endregion printClass
     }
-
-    #region printClass
-
-    //Класс для вывода
-    /*
-    public class EquipmentTable
-    {
-        [Display(Name = "№")]
-        public int EquipmentId { get; set; }
-        public string Name { get; set; }
-        public string Serial { get; set; }
-        public string RestoranName { get; set; }
-        public string Address { get; set; }
-        public DateTime ReciptDate { get; set; }
-        public string SupplerName { get; set; }
-    }
-    */
-
-    // для вывода поставщиков
-    public class SuppliersTable
-    {
-        [Display(Name = "№")]
-        public int SuppliersId { get; set; }
-        [Display(Name = "Поставщик")]
-        public string Name { get; set; }
-    }
-
-    // для вывода ресторанов
-    public class RestorauntsTable
-    {
-        [Display(Name = "№")]
-        public int Id { get; set; }
-        [Display(Name = "Ресторан")]
-        public string Name { get; set; }
-        [Display(Name = "Адрес")]
-        public string Address { get; set; }
-    }
-
-    public class EquipmentStockTable
-    {
-        [Display(Name = "№")]
-        public int Id { get; set; }
-        [Display(Name = "Оборудование")]
-        public string NameEquipment { get; set; }
-        [Display(Name = "Поставщик")]
-        public string NameSupplier { get; set; }
-        //public string AddressRestoran { get; set; }
-        [Display(Name = "Серийный номер")]
-        public string SerialNumber { get; set; }
-        [Display(Name = "Цена")]
-        public int Price { get; set; }
-    }
-
-    public class EquipmentRestorauntTable
-    {
-        [Display(Name = "№")]
-        public int Id { get; set; }
-        [Display(Name ="Оборудование")]
-        public string NameEquipment { get; set; }
-        [Display(Name ="Поставщик")]
-        public string NameSupplier { get; set; }
-        [Display(Name ="Адрес")]
-        public string AddressRestoran { get; set; }
-        [Display(Name ="Серийный номер")]
-        public string SerialNumber { get; set; }
-        [Display(Name ="Цена")]
-        public int Price { get; set; }
-    }
-
-    public class NaimResttable
-    {
-        public string Id { get; set; }
-    }
-
-    public class NaimSuppliersTable
-    {
-        public string Name { get; set; }
-    }
-
-    public class EquipmentTable
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class EquipmentSuppliers
-    {
-        [Display(Name ="№")]
-        public int Id { get; set; }
-        [Display(Name = "Оборудование")]
-        public string NameEquipment { get; set; }
-        [Display(Name = "Цена")]
-        public int Price { get; set; }
-    }
-
-    #endregion printClass
 }
