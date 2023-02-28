@@ -31,7 +31,7 @@ namespace PerevoschikovRestorany.DataStore
         // строка подключения
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-L93R2E4;Database=myTestDBRestorany;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-L93R2E4;Database=PerevoschikovRestorany;Trusted_Connection=True;");
         }
 
         public DataStore()
